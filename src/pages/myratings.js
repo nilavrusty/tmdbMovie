@@ -8,7 +8,7 @@ import { domain, api_key } from '../utility'
 
 // in memory cache
 let totalMoviePages, totalTvPages, moviePage, tvPage = 1;
-let inMemoryCache = [];
+
 
 const MyRatings = ({ guestId }) => {
 
@@ -24,17 +24,7 @@ const MyRatings = ({ guestId }) => {
 
     useEffect(() => {
         (async () => {
-            if (inMemoryCache.length) {
-                //  set movie data 
-                moviePage = inMemoryCache[0].page;
-                totalMoviePages = inMemoryCache[0].total_pages
-                setMovie(inMemoryCache[0].results)
-                //  set tv data
-                tvPage = inMemoryCache[1].page;
-                totalTvPages = inMemoryCache[1].total_pages
-                setTv(inMemoryCache[1].results)
-                return;
-            }
+
             if (guestId?.length) {
                 try {
                     setMovieLoad(true)
@@ -45,7 +35,7 @@ const MyRatings = ({ guestId }) => {
 
                     const arr = [axios.get(`${movieUrl}&page=1`), axios.get(`${tvUrl}&page=1`)];
                     const data = await axios.all(arr);
-                    inMemoryCache = [data[0].data, data[1].data]
+
                     //  set movie data 
                     moviePage = data[0].data.page;
                     totalMoviePages = data[0].data.total_pages

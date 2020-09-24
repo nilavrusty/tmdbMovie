@@ -9,6 +9,7 @@ import RangeRating from '../components/RangeRating'
 import { null_path, domain, api_key } from '../utility'
 
 
+var number_required = 3;
 
 const Details = (props) => {
 
@@ -16,6 +17,8 @@ const Details = (props) => {
     const [type, setType] = useState('');
     const [load, setLoad] = useState(true)
     const [rateLoad, setRateLoad] = useState(false)
+    const [cast, setCast] = useState([])
+
     const alert = useAlert()
 
     useEffect(() => {
@@ -25,6 +28,13 @@ const Details = (props) => {
             let id = props.match.params.id
             try {
                 let data = await axios.get(`${domain}${type}/${id}${api_key}`)
+                let credits = await axios.get(`${domain}${type}/${id}/credits${api_key}`)
+                credits = credits.data.cast;
+                credits.length = number_required;
+                credits = [...credits.filter(v => v != undefined)]
+                setCast([...credits]);
+
+
                 if (Object.keys(data.data).length) {
                     setDetails({ ...data.data })
                 }
@@ -69,10 +79,12 @@ const Details = (props) => {
                     <img src={details.poster_path ? `https://image.tmdb.org/t/p/w500/${details.poster_path}` : null_path} />
                 </div>
                 {/* for upcomming movies ratings are not accepted by API so not showing the range bar */}
-                {upcomming() ? null : <RangeRating load={rateLoad} rate={rate} />}
+                {upcomming() ? null :
+                    <RangeRating load={rateLoad} rate={rate} />
+                }
             </div>
 
-            <DetailsRight details={details} type={type} />
+            <DetailsRight details={details} type={type} cast={cast} />
 
         </div >
     )

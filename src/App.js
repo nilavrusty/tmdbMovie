@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { BrowserRouter, Route, Redirect } from 'react-router-dom'
+import { BrowserRouter, Route, Redirect, Switch } from 'react-router-dom'
 
 import Search from './pages/search'
 import Details from './pages/details'
 import MyRatings from './pages/myratings'
+import CastDetails from './pages/castDetails'
 import Header from './components/RatingHeader'
 
 
@@ -38,21 +39,26 @@ function App() {
           <BrowserRouter>
 
             <Header />
-
             <div >
-              {window.location.pathname === "/" ? <Redirect from="/" to="/search" /> : <Redirect to={window.location.pathname} />}
-              <Route exact path={"/search"}  >
+              {/* {window.location.pathname === "/" ? <Redirect from="/" to="/search" /> : <Redirect to={window.location.pathname} />} */}
+              <Switch>
+                <Route exact path={"/search"}  >
+                  <Search guestId={guestId} />
+                </Route>
+                <Route exact path={"/movie_show/:id"}  >
+                  <Details guestId={guestId} />
+                </Route>
+                <Route exact path={"/tv_show/:id"}  >
+                  <Details guestId={guestId} />
+                </Route>
+                <Route exact path="/my_ratings">
+                  <MyRatings guestId={guestId} />
+                </Route>
+                <Route exact path="/cast_details/:id">
+                  <CastDetails />
+                </Route>
                 <Search guestId={guestId} />
-              </Route>
-              <Route exact path={"/movie_show/:id"}  >
-                <Details guestId={guestId} />
-              </Route>
-              <Route exact path={"/tv_show/:id"}  >
-                <Details guestId={guestId} />
-              </Route>
-              <Route exact path="/my_ratings">
-                <MyRatings guestId={guestId} />
-              </Route>
+              </Switch>
             </div>
           </BrowserRouter>
         </div>

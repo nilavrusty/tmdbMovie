@@ -6,7 +6,7 @@ import { throttleFunction } from '../../utility'
 
 var x;
 
-const HorizontalContent = ({ data, name, loadMore, loading }) => {
+const HorizontalContent = ({ data, name, loadMore, loading, some }) => {
 
     const scrollX = e => {
         x = e.target;
@@ -16,6 +16,19 @@ const HorizontalContent = ({ data, name, loadMore, loading }) => {
             }
         })
 
+    }
+
+    if (some) {
+        return (
+            <div
+                className={`${name}-horizontal-wrapper `}
+            >
+                {data.map((v, i) =>
+                    <EachCard rating={v?.rating} key={i} id={v.id} name={name} poster={v.poster_path} title={v.title || v.name} release={v.release_date || v.first_air_date} />
+                )}
+
+            </div>
+        )
     }
 
     return (

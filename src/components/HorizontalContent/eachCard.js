@@ -8,7 +8,7 @@ const EachCard = memo(({ poster, title, release, id, name, rating }) => {
     return (
 
         <div>
-            <Link to={`${name}_show/${id}`}>
+            <Link to={`/${name}_show/${id}`}>
                 <div className='img-wrapper'>
                     <img loading="lazy" src={poster ? `https://image.tmdb.org/t/p/w500/${poster}` : null_path} alt="poster" />
 
